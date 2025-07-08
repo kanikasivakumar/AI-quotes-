@@ -1,0 +1,127 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-motivation",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5fb3daf5-3a50-46b6-a410-269327ad7610",
+      "name": "Webhook",
+      "webhookId": "b80d7acf-05c8-4cc9-acdd-2969f6615803"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "send a mail to the user as what they want to become. give them a motivation and quotes related to their goals. mail should be in formal . ask them any goal and then sent goal for their particular goals only . ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "0a334481-a23f-46fa-9ea8-da75061c86b8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        220,
+        160
+      ],
+      "id": "b23e9904-a762-4169-a524-b765e755d53c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "2rTkXVLCBU2RMyvM",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kanikasivakumar2004@gmail.com",
+        "subject": "goal setting",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        580,
+        0
+      ],
+      "id": "8a83f0de-c1d5-4023-9baf-1723118a15a4",
+      "name": "Send a message",
+      "webhookId": "60d755e3-769d-4d38-b251-2f3b05f45e5d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5IRGZpse30Mi76sD",
+          "name": "Gmail account 5"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2ea224a7-f6a8-41b3-8ae5-58897ee4b77e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "05287f038f0be0f47787546a36ecbce0436bae43971e6d526ce96f01873c953c"
+  },
+  "id": "Slf7SHyMsOB0khgb",
+  "tags": []
+}
